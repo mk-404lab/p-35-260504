@@ -5,6 +5,7 @@ plugins {
 	id("org.springframework.boot") version "4.0.6"
 	id("io.spring.dependency-management") version "1.1.7"
 	kotlin("plugin.jpa") version "2.2.21"
+	kotlin("kapt") version "2.2.21"
 }
 
 group = "com.back"
@@ -40,6 +41,7 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	implementation("io.github.openfeign.querydsl:querydsl-jpa:7.1")
+	kapt("io.github.openfeign.querydsl:querydsl-apt:7.1:jpa")
 
 	implementation("io.jsonwebtoken:jjwt-api:0.13.0")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")
