@@ -17,4 +17,13 @@ class MemberRepositoryImpl (
             .where(member.id.eq(id))    // where member.id = id
             .fetchOne()     //limit 1
     }
+
+    override fun findQByUsername(username: String): Member? {
+        val member = QMember.member
+
+        return jpaQueryFactory
+            .selectFrom(member)
+            .where(member.username.eq(username))
+            .fetchOne() // limit 1
+    }
 }
