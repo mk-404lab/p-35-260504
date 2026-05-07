@@ -104,5 +104,12 @@ class MemberRepositoryTest {
         assertThat(members).isNotEmpty
         assertThat(members.all {it.nickname.contains("유저")}).isTrue
     }
+
+    @Test
+    fun `countQByNicknameContaining()`() {
+        val count = memberRepository.countQByNicknameContaining("유저")
+
+        assertThat(count).isEqualTo(3)
+    }
 }
 

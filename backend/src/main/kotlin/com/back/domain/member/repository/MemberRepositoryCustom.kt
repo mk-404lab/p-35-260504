@@ -17,4 +17,5 @@ interface MemberRepositoryCustom {
     ): List<Member>
 
     fun findQByNicknameContaining(nickname: String): List<Member>
+    fun countQByNicknameContaining(nickname: String): Long
 }

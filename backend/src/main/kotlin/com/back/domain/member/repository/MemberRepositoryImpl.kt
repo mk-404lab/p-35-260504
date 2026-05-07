@@ -84,4 +84,21 @@ class MemberRepositoryImpl (
             .where(member.nickname.contains(nickname))
             .fetch()
     }
+
+    override fun countQByNicknameContaining(nickname: String): Long {
+        val member = QMember.member
+
+        return jpaQueryFactory
+            .select(member.count())
+            .from(member)
+            .where(member.nickname.contains(nickname))
+            .fetchOne() ?: 0L
+        /*
+        fetchOne()은 쿼리 결과가 없을 경우 null을 반환함
+        만약 member.count 결과가 존재하지 않으면 null이 넘어올 수도 있음
+        하지만 우리는 Long 타입의 반환을 지정했으며, 실제로 해당하는 결과가 없으면 집계 함수에 따라
+        0이 나오기를 기대함
+        따라서 엘비스를 사용해 null일 경우 0L으로 설정
+         */
+    }
 }
