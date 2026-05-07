@@ -4,6 +4,7 @@ import com.back.domain.member.dto.MemberWithUsernameDto
 import com.back.domain.member.service.MemberService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -13,8 +14,14 @@ class ApiV1AdmMemberController(
 ) {
 
     @GetMapping
-    fun list(): List<MemberWithUsernameDto> {
-        return memberService.findAll()
+    fun list(
+        @RequestParam("page", defaultValue = "0") page: Int,
+        @RequestParam("size", defaultValue = "5") pageSize: Int,
+    ): List<MemberWithUsernameDto> {
+
+        val page = memberService.findByPaged(page, pageSize)
+
+        return page.content
             .map { MemberWithUsernameDto(it) }
     }
 }
