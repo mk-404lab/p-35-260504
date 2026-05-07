@@ -101,4 +101,13 @@ class MemberRepositoryImpl (
         따라서 엘비스를 사용해 null일 경우 0L으로 설정
          */
     }
+
+    override fun existsQByNicknameContaining(nickname: String): Boolean {
+        val member = QMember.member
+
+        return jpaQueryFactory
+            .selectFrom(member)
+            .where(member.nickname.contains(nickname))
+            .fetchFirst() != null
+    }
 }
