@@ -147,4 +147,36 @@ class MemberRepositoryImpl (
             .orderBy(member.id.desc())
             .fetch()
     }
+
+    override fun findQByUsernameContaining(username: String, pageable: Pageable): Page<Member> {
+
+        val member = QMember.member
+
+        val query = jpaQueryFactory
+            .selectFrom(member)
+            .where(member.username.contains(username))
+
+        pageable.sort.forEach { order ->
+            when (order.property) {
+                "id" -> query.orderBy(if (order.isAscending) member.id.asc() else member.id.desc())
+                "username" -> query.orderBy(if (order.isAscending) member.username.asc() else member.username.desc())
+                "nickname" -> query.orderBy(if (order.isAscending) member.nickname.asc() else member.nickname.desc())
+            }
+        }
+
+        val content = query
+            .offset(pageable.offset)
+            .limit(pageable.pageSize.toLong())
+            .fetch()
+
+        return PageableExecutionUtils.getPage(content, pageable) {
+            jpaQueryFactory
+                .select(member.count())
+                .from(member)
+                .where(member.nickname.contains(username))
+                .fetchOne() ?: 0L
+        }
+
+
+    }
 }
