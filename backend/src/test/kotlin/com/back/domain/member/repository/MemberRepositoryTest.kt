@@ -139,5 +139,17 @@ class MemberRepositoryTest {
         assertThat(page.totalElements).isEqualTo(3)
         assertThat(page.totalPages).isEqualTo(2)
     }
+
+    @Test
+    fun `findQByNicknameContainingOrderByIdDesc`() {
+        val members = memberRepository.findQByNicknameContainingOrderByIdDesc("유저")
+
+        assertThat(members).isNotEmpty
+        assertThat(members.all {it.nickname.contains("유저")}).isTrue
+
+        for(i in 0 until members.size -1) {
+            assertThat(members[i].id).isGreaterThan(members[i+1].id)
+        }
+    }
 }
 

@@ -23,4 +23,6 @@ interface MemberRepositoryCustom {
     fun countQByNicknameContaining(nickname: String): Long
     fun existsQByNicknameContaining(nickname: String): Boolean
     fun findQByNicknameContaining(nickname: String, pageable: Pageable): Page<Member>
+    fun findQByNicknameContainingOrderByIdDesc(nickname: String): List<Member>
+
 }
