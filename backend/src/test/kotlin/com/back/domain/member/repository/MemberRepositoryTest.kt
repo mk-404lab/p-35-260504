@@ -95,8 +95,14 @@ class MemberRepositoryTest {
 
         assertThat(members).isNotEmpty
         assertThat(members.any {it.username == "admin" && (it.password == "wrong-password" || it.nickname == "운영자")}).isTrue
+    }
 
+    @Test
+    fun `findQByNicknameContaining()`() {
+        val members = memberRepository.findQByNicknameContaining("유저")
 
+        assertThat(members).isNotEmpty
+        assertThat(members.all {it.nickname.contains("유저")}).isTrue
     }
 }
 
