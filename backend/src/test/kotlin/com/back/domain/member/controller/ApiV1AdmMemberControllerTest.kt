@@ -49,18 +49,13 @@ class ApiV1AdmMemberControllerTest {
             .andExpect(MockMvcResultMatchers.status().isOk())
 
         resultActions
-            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(5))
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$[*].id",
-                    Matchers.containsInRelativeOrder(1, 5)
-                )
-            )
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].createDate").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].modifyDate").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].nickname").value("시스템"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].username").value("system"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(5))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].id", Matchers.containsInRelativeOrder(1, 5)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].id").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].createDate").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].modifyDate").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].nickname").value("시스템"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].username").value("system"))
 
 
         // 하나 또는 2개 정도만 검증
