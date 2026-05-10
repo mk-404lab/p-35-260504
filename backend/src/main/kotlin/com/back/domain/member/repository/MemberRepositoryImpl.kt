@@ -8,6 +8,9 @@ import com.querydsl.core.BooleanBuilder
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.jpa.impl.JPAQueryFactory
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
+import org.hibernate.Session
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.support.PageableExecutionUtils
@@ -16,6 +19,18 @@ import org.springframework.data.support.PageableExecutionUtils
 class MemberRepositoryImpl (
     private val jpaQueryFactory: JPAQueryFactory
 ) : MemberRepositoryCustom {
+
+    @PersistenceContext
+    private lateinit var entityManager: EntityManager
+
+    override fun findByUsername(username: String): Member? {
+        val session = entityManager.unwrap(Session::class.java)
+
+        return session
+            .byNaturalId(Member::class.java)
+            .using("username", username)
+            .load()
+    }
 
     override fun findQById(id: Int): Member? {
 

@@ -198,10 +198,13 @@ class MemberRepositoryTest {
     @Test
     @Transactional
     fun `findByUsername, twice`() {
-        println("findById, 1st call")
-        memberRepository.findByUsername("user1") // SELECT * FROM member WHERE id = 1
-        println("findById, 2st call")
+        println("findByUsername, 1st call")
+        memberRepository.findByUsername("user1")
+        println("findByUsername, 2st call")
         memberRepository.findByUsername("user1") // 1차 캐시(영속성 컨택스트) CACHED
+
+        println("findById, 3st call")
+        memberRepository.findById(3) //CACHED
     }
 }
 

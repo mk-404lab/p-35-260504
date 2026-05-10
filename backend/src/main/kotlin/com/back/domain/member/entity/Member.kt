@@ -3,10 +3,13 @@ package com.back.domain.member.entity
 import com.back.global.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import org.hibernate.annotations.NaturalId
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 @Entity
 class Member(
+
+    @NaturalId
     @Column(unique = true)
     var username: String,
     var password: String,
