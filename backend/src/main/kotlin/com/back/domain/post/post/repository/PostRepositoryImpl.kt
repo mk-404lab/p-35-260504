@@ -37,7 +37,6 @@ class PostRepositoryImpl(
 
         val query = jpaQuery
             .selectFrom(post)
-            .join(post.author).fetchJoin()
             .where(builder)
 
         pageable.sort.forEach { order ->

@@ -9,7 +9,8 @@ import java.util.*
 
 @Entity
 class Post(
-    @ManyToOne(fetch = FetchType.EAGER) var author: Member,
+    @ManyToOne(fetch = FetchType.LAZY)
+    var author: Member,
     var title: String,
     var content: String,
     @OneToMany(
