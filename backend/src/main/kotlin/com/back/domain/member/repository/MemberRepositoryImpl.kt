@@ -3,6 +3,7 @@ package com.back.domain.member.repository
 import com.back.domain.member.entity.Member
 import com.back.domain.member.entity.QMember
 import com.back.standard.enums.MemberSearchKeywordType
+import com.back.standard.enums.MemberSearchSortType
 import com.querydsl.core.BooleanBuilder
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Page
@@ -200,6 +201,14 @@ class MemberRepositoryImpl (
         val query = jpaQueryFactory
             .selectFrom(member)
             .where(builder)
+
+        pageable.sort.forEach { order ->
+            when(order.property.lowercase()) {
+                MemberSearchSortType.ID.property -> query.orderBy(if (order.isAscending) member.id.asc() else member.id.desc())
+                MemberSearchSortType.USERNAME.property -> query.orderBy(if (order.isAscending) member.username.asc() else member.username.desc())
+                MemberSearchSortType.NICKNAME.property -> query.orderBy(if (order.isAscending) member.nickname.asc() else member.nickname.desc())
+            }
+        }
 
         val content = query
             .offset(pageable.offset)
