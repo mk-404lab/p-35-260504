@@ -1,12 +1,14 @@
 package com.back.domain.member.repository
 
 import com.back.global.extentions.getOrThrow
+
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 class MemberRepositoryTest {
@@ -182,6 +184,24 @@ class MemberRepositoryTest {
         for (i in 0 until page.content.size - 1) {
             assertThat(page.content[i].id).isGreaterThan(page.content[i + 1].id)
         }
+    }
+
+    @Test
+    @Transactional
+    fun `findById, twice`() {
+        println("findById, 1st call")
+        memberRepository.findById(1) // SELECT * FROM member WHERE id = 1
+        println("findById, 2st call")
+        memberRepository.findById(1) // 1차 캐시(영속성 컨택스트) CACHED
+    }
+
+    @Test
+    @Transactional
+    fun `findByUsername, twice`() {
+        println("findById, 1st call")
+        memberRepository.findByUsername("user1") // SELECT * FROM member WHERE id = 1
+        println("findById, 2st call")
+        memberRepository.findByUsername("user1") // 1차 캐시(영속성 컨택스트) CACHED
     }
 }
 
