@@ -5,6 +5,8 @@ import com.back.domain.member.entity.QMember
 import com.back.standard.enums.MemberSearchKeywordType
 import com.back.standard.enums.MemberSearchSortType
 import com.querydsl.core.BooleanBuilder
+import com.querydsl.core.types.Order
+import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -198,17 +200,34 @@ class MemberRepositoryImpl (
             }
         }
 
+//        val order1 = OrderSpecifier(
+//            Order.ASC,  // ASC, DESC의 정렬 방법(order)을 넣음
+//            member.id   // 정렬 기준(target)을 정함
+//        )
+
         val query = jpaQueryFactory
             .selectFrom(member)
             .where(builder)
 
         pageable.sort.forEach { order ->
-            when(order.property.lowercase()) {
-                MemberSearchSortType.ID.property -> query.orderBy(if (order.isAscending) member.id.asc() else member.id.desc())
-                MemberSearchSortType.USERNAME.property -> query.orderBy(if (order.isAscending) member.username.asc() else member.username.desc())
-                MemberSearchSortType.NICKNAME.property -> query.orderBy(if (order.isAscending) member.nickname.asc() else member.nickname.desc())
+            val path = when(order.property.lowercase()) {
+                MemberSearchSortType.ID.property -> member.id
+                MemberSearchSortType.USERNAME.property -> member.username
+                MemberSearchSortType.NICKNAME.property -> member.nickname
+                else -> null
+            }
+
+            path?.let {property ->
+                OrderSpecifier(
+                    if(order.isAscending) Order.ASC else Order.DESC,
+                    property
+                ).also {
+                    query.orderBy(it)
+                }
             }
         }
+
+
 
         val content = query
             .offset(pageable.offset)
