@@ -6,7 +6,6 @@ import java.time.LocalDateTime
 data class PostDto(
     val id: Int,
     val title: String,
-    val content: String,
     val authorId: Int,
     val authorName: String,
     val createDate: LocalDateTime,
@@ -15,7 +14,6 @@ data class PostDto(
     constructor(post: Post) : this(
         post.id,
         post.title,
-        post.content,
         post.author.id,
         post.author.name,
         post.createDate,

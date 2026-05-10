@@ -2,6 +2,7 @@ package com.back.domain.post.post.service
 
 import com.back.domain.member.entity.Member
 import com.back.domain.post.post.entity.Post
+import com.back.domain.post.post.entity.PostBody
 import com.back.domain.post.post.repository.PostRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -14,7 +15,7 @@ class PostService(
 
     @Transactional
     fun write(author: Member, title: String, content: String): Post {
-        val post = Post(author, title, content)
+        val post = Post(author, title, PostBody(content))
         return postRepository.save<Post>(post)
     }
 

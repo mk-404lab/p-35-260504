@@ -23,12 +23,12 @@ class PostRepositoryImpl(
         val builder = BooleanBuilder().apply {
             when (kwType) {
                 PostSearchKeywordType.TITLE -> this.and(post.title.contains(kw))
-                PostSearchKeywordType.CONTENT -> this.and(post.content.contains(kw))
+                PostSearchKeywordType.CONTENT -> this.and(post.body.content.contains(kw))
                 PostSearchKeywordType.AUTHOR_NICKNAME -> this.and(post.author.nickname.contains(kw))
                 PostSearchKeywordType.ALL -> {
                     this.and(
                         post.title.contains(kw).or(
-                            post.content.contains(kw)
+                            post.body.content.contains(kw)
                         )
                     )
                 }
